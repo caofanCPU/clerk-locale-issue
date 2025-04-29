@@ -165,6 +165,8 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'off',
   },
 };
+4. 使用useEffect警告缺失了依赖项, 但如果加上依赖项又会引起问题就需要屏蔽
+// eslint-disable-next-line react-hooks/exhaustive-deps
 ```
 
 
