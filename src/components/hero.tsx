@@ -15,7 +15,7 @@ export function Hero() {
       <div className="flex-1 space-y-6">
         <h1 className="text-4xl md:text-6xl font-bold leading-tight">
           {t('mainTitle')}<br />{" "}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">{t('mainEyesOn')}</span>
+          <span className="text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-pink-600">{t('mainEyesOn')}</span>
         </h1>
         <p className="text-lg text-gray-300 max-w-2xl">
           {t('description')}
@@ -24,7 +24,7 @@ export function Hero() {
           <Button
             asChild
             size="lg"
-            className="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700"
+            className="bg-linear-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700"
           >
             <Link href="https://preview.reve.art/" target="_blank" rel="noopener noreferrer">
               {t('button')} <ArrowRight className="ml-2 h-4 w-4" />

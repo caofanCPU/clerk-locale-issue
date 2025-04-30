@@ -119,7 +119,7 @@ export default function LanguageDetector() {
   return (
     <div className="fixed top-16 right-4 z-40 w-[420px]">
       <div className={`shadow-lg rounded-lg transition-all duration-300 ${show ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'} 
-        bg-gradient-to-r from-purple-100/95 via-white/95 to-purple-100/95 backdrop-blur-sm
+        bg-linear-to-r from-purple-100/95 via-white/95 to-purple-100/95 backdrop-blur-xs
         animate-gradient-x`}>
         <div className="relative px-6 py-4 overflow-hidden">
           <div className="relative z-10 flex flex-col gap-3">
@@ -154,7 +154,7 @@ export default function LanguageDetector() {
               </button>
             </div>
           </div>
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-200/30 to-transparent animate-shimmer" />
+          <div className="absolute inset-0 bg-linear-to-r from-transparent via-purple-200/30 to-transparent animate-shimmer" />
         </div>
       </div>
     </div>

@@ -9,7 +9,7 @@ export function CTA() {
   const t = useTranslations('cta');
   return (
     <section className="container mx-auto px-4 py-20">
-      <div className="bg-gradient-to-r from-purple-900/50 to-pink-900/50 rounded-3xl p-12 text-center">
+      <div className="bg-linear-to-r from-purple-900/50 to-pink-900/50 rounded-3xl p-12 text-center">
         <h2 className="text-3xl md:text-4xl font-bold mb-6">
           {t('title')} <span className="text-purple-400">{t('eyesOn')}</span>?
         </h2>

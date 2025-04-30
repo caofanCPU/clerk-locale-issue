@@ -37,7 +37,7 @@ export default function LanguageSwitcher() {
                 <LanguageButton
                     variant="ghost"
                     size="icon"
-                    className="bg-gradient-to-r from-purple-400 to-pink-600 hover:from-purple-500 hover:to-pink-700 text-white transform hover:scale-110 transition-all duration-300"
+                    className="bg-linear-to-r from-purple-400 to-pink-600 hover:from-purple-500 hover:to-pink-700 text-white transform hover:scale-110 transition-all duration-300"
                 >
                     <Globe className="h-5 w-5" />
                 </LanguageButton>
@@ -45,7 +45,7 @@ export default function LanguageSwitcher() {
             <DropdownMenuContent
                 align="end"
                 sideOffset={5}
-                className="bg-white/90 dark:bg-gray-800/90 border-purple-100 dark:border-purple-800 w-[200px] p-2 backdrop-blur-sm translate-x-[50px]"
+                className="bg-white/90 dark:bg-gray-800/90 border-purple-100 dark:border-purple-800 w-[200px] p-2 backdrop-blur-xs translate-x-[50px]"
             >
                 <div className="grid grid-cols-2 gap-1">
                     {appConfig.i18n.locales.map((loc) => (
@@ -57,8 +57,8 @@ export default function LanguageSwitcher() {
                                 hover:scale-105 hover:shadow-md
                                 rounded-md whitespace-nowrap
                                 ${locale === loc
-                                    ? 'bg-gradient-to-r from-purple-400 to-pink-600 text-white font-medium shadow-lg scale-105'
-                                    : 'hover:bg-gradient-to-r hover:from-purple-400/10 hover:to-pink-600/10 hover:text-transparent hover:bg-clip-text'
+                                    ? 'bg-linear-to-r from-purple-400 to-pink-600 text-white font-medium shadow-lg scale-105'
+                                    : 'hover:bg-linear-to-r hover:from-purple-400/10 hover:to-pink-600/10 hover:text-transparent hover:bg-clip-text'
                                 }
                             `}
                             onClick={() => handleLocaleChange(loc)}

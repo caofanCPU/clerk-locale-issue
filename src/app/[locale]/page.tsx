@@ -8,7 +8,7 @@ import { CTA } from "@/components/cta"
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white">
+    <div className="min-h-screen bg-linear-to-b from-gray-900 to-black text-white">
       <Header />
       <Hero />
       <Gallery />
