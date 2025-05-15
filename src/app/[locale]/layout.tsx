@@ -3,7 +3,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale, getTranslations } from 'next-intl/server';
 import './globals.css'
 import { ClerkProvider } from "@clerk/nextjs";
-import { enUS, zhCN } from '@clerk/localizations'
+import { enUS, zhCN, frFR, jaJP } from '@clerk/localizations'
 import { shadesOfPurple, dark } from '@clerk/themes'
 export const dynamic = 'force-dynamic'
 
@@ -29,6 +29,13 @@ export async function generateMetadata({
   }
 }
 
+const clerkIntl = {
+  en: enUS,
+  zh: zhCN,
+  fr: frFR,
+  ja: jaJP,
+}
+
 
 export default async function RootLayout({
   children,
@@ -44,6 +51,7 @@ export default async function RootLayout({
   const signUpUrlWithLocale = `/${locale}/sign-up`;
   const signInFallbackRedirectUrlWithLocale = `/${locale}`;
   const signUpFallbackRedirectUrlWithLocale = `/${locale}`;
+  const currentLocalization = clerkIntl[locale as keyof typeof clerkIntl];
 
   console.log(`ClerkProviderClient - signInUrl for ClerkProvider: ${signInUrlWithLocale}`);
   console.log(`ClerkProviderClient - signUpUrl for ClerkProvider: ${signUpUrlWithLocale}`);
@@ -53,7 +61,7 @@ export default async function RootLayout({
       signUpUrl={signUpUrlWithLocale}
       signInFallbackRedirectUrl={signInFallbackRedirectUrlWithLocale}
       signUpFallbackRedirectUrl={signUpFallbackRedirectUrlWithLocale}
-      localization={locale === 'zh' ? zhCN : enUS}
+      localization={currentLocalization}
       appearance={{
         signIn: { baseTheme: shadesOfPurple },
         signUp: { baseTheme: dark },
