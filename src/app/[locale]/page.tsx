@@ -1,21 +1,16 @@
+'use client'
+
+import { useTranslations } from "next-intl";
 import { Header } from "@/components/header"
-import { Hero } from "@/components/hero"
-import { Features } from "@/components/features"
-import { Gallery } from "@/components/gallery"
-import { Tips } from "@/components/tips"
-import { SeoContent } from "@/components/seo-content"
-import { CTA } from "@/components/cta"
 
 export default function Home() {
+  const t = useTranslations('home');
   return (
-    <div className="min-h-screen bg-linear-to-b from-gray-900 to-black text-white">
+    <div className="min-h-screen bg-white text-black">
       <Header />
-      <Hero />
-      <Gallery />
-      <Features />
-      <Tips />
-      <SeoContent />
-      <CTA />
+      <div className="flex-1 flex items-center justify-center mt-50 text-9xl text-purple-400">
+        <span>{t('section')}</span>
+      </div>
     </div>
   )
 }

@@ -2,8 +2,9 @@ import { appConfig } from "@/lib/appConfig";
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale, getTranslations } from 'next-intl/server';
 import './globals.css'
-import { GoogleAnalyticsScript } from "@/components/script/GoogleAnalyticsScript";
-
+import { ClerkProvider } from "@clerk/nextjs";
+import { enUS, zhCN } from '@clerk/localizations'
+import { shadesOfPurple, dark } from '@clerk/themes'
 export const dynamic = 'force-dynamic'
 
 // 网站元数据
@@ -16,26 +17,8 @@ export async function generateMetadata({
   const t = await getTranslations({ locale, namespace: 'home' });
 
   return {
-    title: t('webTitle'),
-    description: t('webDescription'),
-    keywords: t('keywords'),
+    title: t('title'),
     metadataBase: new URL(appConfig.baseUrl),
-    alternates: {
-      canonical: `${appConfig.baseUrl}/${locale}`,
-      languages: {
-        "en": `${appConfig.baseUrl}/en`,
-        "zh": `${appConfig.baseUrl}/zh`,
-        "ja": `${appConfig.baseUrl}/ja`,
-        "ko": `${appConfig.baseUrl}/ko`,
-        "fr": `${appConfig.baseUrl}/fr`,
-        "de": `${appConfig.baseUrl}/de`,
-        "es": `${appConfig.baseUrl}/es`,
-        "it": `${appConfig.baseUrl}/it`,
-        "pt": `${appConfig.baseUrl}/pt`,
-        "tr": `${appConfig.baseUrl}/tr`,
-        "pl": `${appConfig.baseUrl}/pl`,
-      }
-    },
     icons: [
       { rel: "icon", type: 'image/png', sizes: "16x16", url: "/favicon-16x16.png" },
       { rel: "icon", type: 'image/png', sizes: "32x32", url: "/favicon-32x32.png" },
@@ -57,12 +40,33 @@ export default async function RootLayout({
   const { locale } = await paramsPromise;  // 使用新名称
   setRequestLocale(locale);
   const messages = await getMessages();
+  const signInUrlWithLocale = `/${locale}/sign-in`;
+  const signUpUrlWithLocale = `/${locale}/sign-up`;
+  const signInFallbackRedirectUrlWithLocale = `/${locale}`;
+  const signUpFallbackRedirectUrlWithLocale = `/${locale}`;
+
+  console.log(`ClerkProviderClient - signInUrl for ClerkProvider: ${signInUrlWithLocale}`);
+  console.log(`ClerkProviderClient - signUpUrl for ClerkProvider: ${signUpUrlWithLocale}`);
   return (
-    <html lang={locale} suppressHydrationWarning>
-      <NextIntlClientProvider messages={messages}>
-        <body>{children}</body>
-        <GoogleAnalyticsScript />
-      </NextIntlClientProvider>
-    </html>
+    <ClerkProvider
+      signInUrl={signInUrlWithLocale}
+      signUpUrl={signUpUrlWithLocale}
+      signInFallbackRedirectUrl={signInFallbackRedirectUrlWithLocale}
+      signUpFallbackRedirectUrl={signUpFallbackRedirectUrlWithLocale}
+      localization={locale === 'zh' ? zhCN : enUS}
+      appearance={{
+        signIn: { baseTheme: shadesOfPurple },
+        signUp: { baseTheme: dark },
+      }}
+    >
+      <html lang={locale} suppressHydrationWarning>
+        <NextIntlClientProvider messages={messages}>
+          <body>
+            {children}
+          </body>
+        </NextIntlClientProvider>
+      </html>
+    </ClerkProvider>
+
   )
 }

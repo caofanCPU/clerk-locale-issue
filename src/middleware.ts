@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import createMiddleware from 'next-intl/middleware';
 import { appConfig } from "@/lib/appConfig";
+import { clerkMiddleware, ClerkMiddlewareAuth, createRouteMatcher } from '@clerk/nextjs/server';
 
 const intlMiddleware = createMiddleware({
   // 多语言配置
@@ -12,21 +13,30 @@ const intlMiddleware = createMiddleware({
   localeDetection: false  // 添加此配置以禁用自动语言检测
 });
 
-export function middleware(request: NextRequest) {
-  // 处理根路径到默认语言的永久重定向
-  if (request.nextUrl.pathname === '/') {
+
+const allowPassWhitelist = createRouteMatcher(['/(.*)'])
+
+export default clerkMiddleware(async (auth: ClerkMiddlewareAuth, req: NextRequest) => {
+  if (!allowPassWhitelist(req)) {
+    const { userId, redirectToSignIn } = await auth()
+    if (!userId) {
+      return redirectToSignIn()
+    }
+    console.log('User is authorized:', userId)
+  }
+  if (req.nextUrl.pathname === '/') {
     const defaultLocale = appConfig.i18n.defaultLocale;
-    return NextResponse.redirect(new URL(`/${defaultLocale}`, request.url), 301);
+    return NextResponse.redirect(new URL(`/${defaultLocale}`, req.url), 301);
   }
 
   // 处理尾部斜杠的重定向
-  if (request.nextUrl.pathname.length > 1 && request.nextUrl.pathname.endsWith('/')) {
-    const newUrl = new URL(request.nextUrl.pathname.slice(0, -1), request.url);
+  if (req.nextUrl.pathname.length > 1 && req.nextUrl.pathname.endsWith('/')) {
+    const newUrl = new URL(req.nextUrl.pathname.slice(0, -1), req.url);
     return NextResponse.redirect(newUrl, 301);
   }
 
-  return intlMiddleware(request);
-}
+  return intlMiddleware(req);
+}, { debug: appConfig.clerk.debug })
 
 export const config = {
   matcher: [
