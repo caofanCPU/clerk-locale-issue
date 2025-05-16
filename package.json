@@ -82,7 +82,9 @@
   "pnpm": {
     "onlyBuiltDependencies": [
       "@clerk/shared",
-      "sharp"
+      "@tailwindcss/oxide",
+      "sharp",
+      "unrs-resolver"
     ],
     "overrides": {
       "@types/react": "19.1.2",

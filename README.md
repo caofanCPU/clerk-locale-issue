@@ -1,6 +1,6 @@
-**Incorrect Post Locale info in `SignInButton`  with `next-intl` (`localePrefix: "always"`)**
+## Incorrect Post Locale info in `SignInButton`  with `next-intl` (`localePrefix: "always"`)**
 
-**Description:**
+### Description
 When using `@clerk/nextjs` for authentication in a Next.js application that is internationalized by `next-intl` (specifically configured with `localePrefix: "always"` in `middleware.ts`), When jumping to a custom login page by clicking the `SignInButton`, the right language prefix(such as `fr`) of the page is incorrectly changed to the default language prefix (`en`).
 
 **Steps to reproduce:**
@@ -31,3 +31,21 @@ When using `@clerk/nextjs` for authentication in a Next.js application that is i
       * If the page is force-refreshed after switching the language but *before* clicking the `SignInButton`, the subsequent sign-in flow respects the current locale.
       * The issue seems to lie within the internal state or redirection handling of `ClerkProvider` or `SignInButton` when the locale changes dynamically on the client-side without a full page reload. It might be that an initial (potentially default) locale context is cached or latched onto, and not properly updated when `SignInButton` constructs its navigation URL for the sign-in/sign-up flow.
 6.  I have tried adding a `key` prop (e.g., `key={locale}`) to `ClerkProvider` and `SignInButton` to force re-rendering when the locale changes, but these attempts were unsuccessful in resolving the issue.
+
+### Progress update
+
+I have tried commenting out the login/registration URLs in the configuration file, but it didn't work at all, and the problem still exists. 
+Additionally, in the debug logs, I found that Clerk pulls configuration information from the Clerk Dashboard, so I conducted more tests. 
+The conclusions are as follows:  
+
+- The configuration priority of the `signInUrl` parameter at the code level of the `ClerkProvider` component   **>**   the environment variable configuration `NEXT_PUBLIC_CLERK_SIGN_IN_URL`   **>**   the Clerk Dashboard Path configuration. 
+
+Can this be confirmed?  
+
+Based on the above conclusions, it is now certain that the problem lies in the use of parameters in the `[ClerkProvider usage code](https://github.com/caofanCPU/clerk-locale-issue/blob/main/src/app/%5Blocale%5D/layout.tsx)`. 
+The phenomenon is that after switching the language, the `signUrl` parameter uses the locale prefix from the previous session, but after a forced browser refresh, the locale parameter is normal.
+I boldly speculate that the `ClerkProvider` component uses caching. If we can understand how `ClerkProvider` manages parameters such as `signUrl`, the problem should be locatable.  
+
+By the way, after some explorations, I found another way to bypass the existing issue: instead of using the custom login `sign-in/[[...sign-in]]/page` page, use **`<SignInButton mode="modal">`** to log in via modal. However, this is not my ideal solution.
+
+```
