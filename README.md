@@ -48,6 +48,10 @@ When integrating `@clerk/nextjs` authentication and `next-intl` internationaliza
 ## Source Code Investigation & Analysis
 Based on source version `@clerk/nextjs@6.19.4`, [Clerk official release](https://github.com/clerk/javascript/releases/tag/%40clerk%2Fnextjs%406.19.4)
 
+
+![Test log](./public/window.clerk.jpeg)
+
+
 ### 1. Root Cause
 
 Through in-depth analysis of the `ClerkProvider`, `SignInButton`, and Clerk SDK source code, combined with actual debugging and log output, it is **ultimately confirmed that the root cause lies in the Clerk JS SDK (`window.Clerk`) being a global singleton on the client side**:

@@ -1,6 +1,6 @@
 "use client";
 
-import { ClerkProvider, useClerk } from "@clerk/nextjs";
+import { ClerkProvider } from "@clerk/nextjs";
 import { enUS, zhCN, frFR, jaJP } from '@clerk/localizations';
 import { shadesOfPurple, dark } from '@clerk/themes';
 import React, { useEffect } from "react";

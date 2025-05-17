@@ -47,6 +47,10 @@
 ## 源码排查分析
 基于源码版本`@clerk/nextjs@6.19.4`, [Clerk官方发布](https://github.com/clerk/javascript/releases/tag/%40clerk%2Fnextjs%406.19.4)
 
+
+![Test log](./public/window.clerk.jpeg)
+
+
 ### 1. 问题根因
 
 通过对 `ClerkProvider`、`SignInButton` 及 Clerk SDK 源码的深入分析，并结合实际调试和日志输出，**最终确认问题根因在于 Clerk JS SDK（`window.Clerk`）在客户端为全局单例**：
