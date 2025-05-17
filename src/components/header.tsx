@@ -13,10 +13,15 @@ import {
   UserButton,
 } from '@clerk/nextjs'
 import Link from "next/link"
+
+import { useClerk } from '@clerk/clerk-react'
+
 export function Header() {
   const t = useTranslations('home');
   const locale = useLocale();
-  console.log(`locale changed to: ${locale}`);
+  const clerk = useClerk();
+  console.log(`[Header] locale changed to: ${locale}, and [Clerk Context param] signInUrl is: ${clerk.buildSignInUrl()}`);
+
   return (
     <header className="container mx-auto py-2 px-2 flex justify-between items-center border border-purple-200 rounded-full mt-4">
       <Link href={`/${locale}`}>

@@ -2,9 +2,7 @@ import { appConfig } from "@/lib/appConfig";
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale, getTranslations } from 'next-intl/server';
 import './globals.css'
-import { ClerkProvider } from "@clerk/nextjs";
-import { enUS, zhCN, frFR, jaJP } from '@clerk/localizations'
-import { shadesOfPurple, dark } from '@clerk/themes'
+import ClerkProviderClient from "@/components/ClerkProviderClient";
 export const dynamic = 'force-dynamic'
 
 // 网站元数据
@@ -29,13 +27,6 @@ export async function generateMetadata({
   }
 }
 
-const clerkIntl = {
-  en: enUS,
-  zh: zhCN,
-  fr: frFR,
-  ja: jaJP,
-}
-
 
 export default async function RootLayout({
   children,
@@ -47,34 +38,16 @@ export default async function RootLayout({
   const { locale } = await paramsPromise;  // 使用新名称
   setRequestLocale(locale);
   const messages = await getMessages();
-  const signInUrlWithLocale = `/${locale}/sign-in`;
-  const signUpUrlWithLocale = `/${locale}/sign-up`;
-  const signInFallbackRedirectUrlWithLocale = `/${locale}`;
-  const signUpFallbackRedirectUrlWithLocale = `/${locale}`;
-  const currentLocalization = clerkIntl[locale as keyof typeof clerkIntl];
 
-  console.log(`ClerkProviderClient - signInUrl for ClerkProvider: ${signInUrlWithLocale}`);
-  console.log(`ClerkProviderClient - signUpUrl for ClerkProvider: ${signUpUrlWithLocale}`);
   return (
-    <ClerkProvider
-      signInUrl={signInUrlWithLocale}
-      signUpUrl={signUpUrlWithLocale}
-      signInFallbackRedirectUrl={signInFallbackRedirectUrlWithLocale}
-      signUpFallbackRedirectUrl={signUpFallbackRedirectUrlWithLocale}
-      localization={currentLocalization}
-      appearance={{
-        signIn: { baseTheme: shadesOfPurple },
-        signUp: { baseTheme: dark },
-      }}
-    >
-      <html lang={locale} suppressHydrationWarning>
+    <ClerkProviderClient locale={locale}>
+      <html lang={locale} suppressHydrationWarning key={locale}>
         <NextIntlClientProvider messages={messages}>
           <body>
             {children}
           </body>
         </NextIntlClientProvider>
       </html>
-    </ClerkProvider>
-
+    </ClerkProviderClient>
   )
 }
